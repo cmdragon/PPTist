@@ -14,11 +14,11 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api/v1/proxy/ppt_server': {
-        target: 'http://192.168.1.103:8003',
+        target: 'http://192.168.2.103:8003',
         changeOrigin: true
       },
       '/api/v1/proxy/ppt_asset': {
-        target: 'http://192.168.1.103:8003',
+        target: 'http://192.168.2.103:8003',
         changeOrigin: true
       }
     }

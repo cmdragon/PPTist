@@ -10,7 +10,7 @@ export default {
   },
 
   getFileData(filename: string): Promise<any> {
-    return axios.get(`${ASSET_URL}/data/${filename}.json`)
+    return axios.get(`/mocks/${filename}.json`)
   },
 
   AIPPT_Outline(

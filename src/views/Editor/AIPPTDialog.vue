@@ -18,7 +18,7 @@
       >
         <template #suffix>
           <span class="count">{{ keyword.length }} / 50</span>
-          <span class="language" v-tooltip="'切换语言'" @click="language = language === 'zh' ? 'en' : 'zh'">{{ language === 'zh' ? '中' : '英' }}</span>
+          <span class="language" v-tooltip="'切换语言'" @click="language = language === '中文' ? '英文' : '中文'">{{ language === '中文' ? '中' : '英' }}</span>
           <div class="submit manual-btn" @click="step = 'manual-outline'">手动输入大纲</div>
           <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI 生成</div>
         </template>
@@ -28,12 +28,11 @@
       </div>
       <div class="model-selector">
         <div class="label">选择AI模型：</div>
-        <Select 
+        <Select
           style="width: 160px;"
           v-model:value="model"
           :options="[
-            { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
-            { label: 'GLM-4-Z1-Flash', value: 'GLM-4-Z1-Flash' },
+            { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
           ]"
         />
         <div class="more-models-btn" @click="goToMoreModels">更多AI模型</div>
@@ -102,7 +101,7 @@ const mainStore = useMainStore()
 const { templates } = storeToRefs(useSlidesStore())
 const { AIPPT, getMdContent } = useAIPPT()
 
-const language = ref<'zh' | 'en'>('zh')
+const language = ref<'中文' | '英文'>('中文')
 const keyword = ref('')
 const outline = ref('')
 const manualOutline = ref(`
@@ -194,7 +193,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template' | 'manual-outline'>('setup')
-const model = ref('GLM-4-Flash')
+const model = ref('GLM-4.5-Flash')
 
 const recommends = ref([
   '大学生职业生涯规划',
@@ -234,7 +233,7 @@ const createOutline = async () => {
 
   loading.value = true
   outlineCreating.value = true
-  
+
   const stream = await api.AIPPT_Outline(keyword.value, language.value, model.value)
 
   loading.value = false
@@ -242,7 +241,7 @@ const createOutline = async () => {
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
-  
+
   const readStream = () => {
     reader.read().then(({ done, value }) => {
       if (done) {
@@ -250,7 +249,7 @@ const createOutline = async () => {
         outlineCreating.value = false
         return
       }
-  
+
       const chunk = decoder.decode(value, { stream: true })
       outline.value += chunk
 
@@ -267,12 +266,12 @@ const createOutline = async () => {
 const createPPT = async () => {
   loading.value = true
 
-  const stream = await api.AIPPT(outline.value, language.value, 'GLM-4-Flash')
+  const stream = await api.AIPPT(outline.value, language.value, 'GLM-4.5-Flash')
   const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
-  
+
   const readStream = () => {
     reader.read().then(({ done, value }) => {
       if (done) {
@@ -280,7 +279,7 @@ const createPPT = async () => {
         mainStore.setAIPPTDialogState(false)
         return
       }
-  
+
       const chunk = decoder.decode(value, { stream: true })
       try {
         const slide: AIPPTSlide = JSON.parse(chunk)
