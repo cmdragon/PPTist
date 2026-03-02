@@ -32,7 +32,7 @@
           style="width: 160px;"
           v-model:value="model"
           :options="[
-            { label: 'glm-4.7-flash', value: 'glm-4.7-flash' },
+            { label: 'doubao-seed-1.6-flash', value: 'doubao-seed-1.6-flash' },
           ]"
         />
         <div class="more-models-btn" @click="goToMoreModels">更多AI模型</div>
@@ -193,7 +193,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template' | 'manual-outline'>('setup')
-const model = ref('glm-4.7-flash')
+const model = ref('doubao-seed-1.6-flash')
 
 const recommends = ref([
   '大学生职业生涯规划',
@@ -266,7 +266,7 @@ const createOutline = async () => {
 const createPPT = async () => {
   loading.value = true
 
-  const stream = await api.AIPPT(outline.value, language.value, 'glm-4.7-flash')
+  const stream = await api.AIPPT(outline.value, language.value, 'doubao-seed-1.6-flash')
   const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()

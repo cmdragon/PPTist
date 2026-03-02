@@ -26,12 +26,41 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern',
         additionalData: `
-          @import '@/assets/styles/variable.scss';
-          @import '@/assets/styles/mixin.scss';
+          @use '@/assets/styles/variable.scss' as *;
+          @use '@/assets/styles/mixin.scss' as *;
         `
       },
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['vue', 'pinia', 'axios'],
+          'prosemirror': [
+            'prosemirror-commands',
+            'prosemirror-dropcursor',
+            'prosemirror-gapcursor',
+            'prosemirror-history',
+            'prosemirror-inputrules',
+            'prosemirror-keymap',
+            'prosemirror-model',
+            'prosemirror-schema-basic',
+            'prosemirror-schema-list',
+            'prosemirror-state',
+            'prosemirror-view'
+          ],
+          'echarts': ['echarts'],
+          'pptxgenjs': ['pptxgenjs'],
+          'pptxtojson': ['pptxtojson'],
+          'html-parser': ['@/utils/htmlParser'],
+          'prosemirror-utils': ['@/utils/prosemirror']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1500
   },
   resolve: {
     alias: {

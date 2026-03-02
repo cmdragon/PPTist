@@ -224,7 +224,7 @@ export default () => {
         else {
           background = {
             type: 'solid',
-            color: value || '#fff',
+            color: typeof value === 'string' ? value || '#fff' : value?.backgroundColor || '#fff',
           }
         }
 
