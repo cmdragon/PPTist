@@ -127,6 +127,7 @@ import {
   User,
   Switch,
   More,
+  Wechat,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -259,6 +260,7 @@ export const icons: Icons = {
   IconUser: User,
   IconSwitch: Switch,
   IconMore: More,
+  IconWechat: Wechat,
 }
 
 export default {

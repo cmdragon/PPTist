@@ -64,10 +64,25 @@
       <div class="menu-item" v-tooltip="'更多实用工具'" @click="goLink('https://tools.cmdragon.cn/')">
         <div class="menu-item"><IconMore class="icon" /></div>
       </div>
-      <a class="github-link" href="https://github.com/Amd794/PPTist" target="_blank">
-        <div class="menu-item"><IconGithub class="icon" /></div>
-      </a>
+      <div class="menu-item" v-tooltip="'关注微信公众号'" @click="wechatModalVisible = true">
+        <div class="menu-item"><IconWechat class="icon" /></div>
+      </div>
+
     </div>
+
+    <Modal
+      v-model:visible="wechatModalVisible"
+      :width="300"
+      :close-button="true"
+    >
+      <div class="wechat-modal">
+        <h3 style="text-align: center; margin-bottom: 20px;">关注微信公众号</h3>
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+          <img src="/wechat_qrcode.webp" alt="微信公众号二维码" style="width: 200px; height: 200px;" />
+        </div>
+        <p style="text-align: center; font-size: 14px; color: #666;">扫码关注获取更多PPT模板和教程</p>
+      </div>
+    </Modal>
 
     <Drawer
       :width="320"
@@ -83,7 +98,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
@@ -98,6 +113,7 @@ import Drawer from '@/components/Drawer.vue'
 import Input from '@/components/Input.vue'
 import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import Modal from '@/components/Modal.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -108,6 +124,7 @@ const { resetSlides } = useSlideHandler()
 
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
+const wechatModalVisible = ref(false)
 const editingTitle = ref(false)
 const titleInputRef = ref<InstanceType<typeof Input>>()
 const titleValue = ref('')
@@ -140,6 +157,11 @@ const openMarkupPanel = () => {
 const openAIPPTDialog = () => {
   mainStore.setAIPPTDialogState(true)
 }
+
+onMounted(() => {
+  // 页面加载时自动弹出微信公众号弹窗
+  wechatModalVisible.value = true
+})
 </script>
 
 <style lang="scss" scoped>
